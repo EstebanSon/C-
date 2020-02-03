@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+
+namespace MySystem
+{
+    class Program
+    {
+       static void Main(string[] args)
+        {
+            // Anonymous Type은 C#3.0부터 클래스를 미리 정의하지 않고 사용할 수 있게 하는 Anonymous Type을 지원함
+            // Aonymous Type은 new {...}와 같은 형식을 사용하며, new 블럭안에 속성 = 값 할당을 하고, 각 속성값은 콤마로 분리
+           var val = new[] {
+                new { Name = "LEE", Age = 20 },
+                new { Name = "KIN", Age = 21 },
+                new { Name = "SON", Age = 22 },
+           };
+
+
+            foreach(var vu in val)
+            {
+                Console.WriteLine("{0} {1}",vu.Name, vu.Age);
+            }
+         
+        }
+    }
+}
