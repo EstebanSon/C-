@@ -1,0 +1,16 @@
+using System;
+
+namespace MySystem
+{
+    delegate int Calculate(int number1, int number2);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 람다식은 Anonymous function을 표현하는데 사용
+            Calculate cal1 = (int number1, int number2) => number1 + number2;
+            Console.WriteLine("{0} + {1} = {2}", 1, 2, cal1(1,2));
+        }
+    }
+}
