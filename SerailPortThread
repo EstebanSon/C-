@@ -1,0 +1,60 @@
+using System;
+using System.IO.Ports;
+using System.Threading;
+using System.Threading.Tasks;
+
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+/*            if(args.Length <1)
+            {
+                Console.WriteLine("Usage: SerialChat {portName:");
+                Console.WriteLine(" Ex : C> SerialChat COM2");
+                return;
+            }
+*/
+            
+            string portName = "COM2";
+
+            // Serial Port Open
+            SerialPort sp = new SerialPort(portName);
+            sp.Open();
+
+            // Read WorkTheread : Read from serial port
+            var cancel = new CancellationTokenSource();
+            var readTask = Task.Factory.StartNew(() =>
+            {
+                while(!cancel.IsCancellationRequested)
+                {
+                    string readMsg = sp.ReadLine();
+                    if(readMsg.ToLower() == "quit")
+                    {
+                        Environment.Exit(0);
+                    }
+                    Console.WriteLine(readMsg);
+                }
+            }, cancel.Token);
+
+            // Main Thread : Wrtie to serial port
+            while(true)
+            {
+                string sendMsg = Console.ReadLine();
+                if(sendMsg.ToLower() == "quit")
+                {
+                    sp.WriteLine(sendMsg);
+                    cancel.Cancel();
+                    break;
+                }
+
+                sp.WriteLine(sendMsg);
+            }
+
+            // Serial Port Close
+            sp.Close();
+        }
+    }
+}
