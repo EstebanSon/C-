@@ -1,0 +1,81 @@
+using System;
+using System.Dynamic;
+
+namespace MySystem
+{
+    class Program
+    {
+        public void M1()
+        {
+            // ExpandoObject에서 dynamic 타입 생성
+            dynamic person = new ExpandoObject();
+
+            // 속성 지정
+            person.Name = "Kim";
+            person.Age = 10;
+
+            // 메소드 지정
+            person.Display = (Action)(() =>
+            {
+                Console.WriteLine("{0} {1}", person.Name, person.Age);
+            });
+
+            person.ChangeAge = (Action<int>)((age) =>
+            {
+                person.Age = age;
+                if(person.AgeChanged != null)
+                {
+                    person.AgeChanged(this, EventArgs.Empty);
+                }
+            });
+
+            // Event Init
+            person.AgeChanged = null; // dynamic 이벤트는 먼저 null 초기화함
+
+             // 이벤트 핸들러 지정
+             person.AgeChanged += new EventHandler(OnAgeChanged);
+
+             // 타 메소드에 매개변수 전달
+             M2(person);
+        }
+
+        private void OnAgeChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Age changed");
+        }
+
+        public void M2(dynamic d)
+        {
+            // dynamic 타입 메소드 호출
+            d.Display();
+            d.ChangeAge(20);
+            d.Display();
+        }
+
+        static void Main(string[] args)
+        {
+            // 1.  dynamic은 중간에 형을 변환가능
+            dynamic v = 1;
+            
+            // System. Int32 출력
+            Console.WriteLine(v.GetType());
+
+            v = "abc";
+            Console.WriteLine(v.GetType());
+
+            // 2. dynamic은 cast가 필요없음
+            object o = 10;
+            o = (int)o + 20;
+
+            Console.WriteLine("o : {0}", o);
+
+            // dynamic 타입은 casting이 필요없다.
+            dynamic d = 10;
+            d = d + 20;
+            Console.WriteLine("d : {0}", d);
+
+            // dynamic ExpandoOjbect
+
+        }
+    }
+}
