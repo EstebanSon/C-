@@ -1,0 +1,129 @@
+C# Naming Convention
+
+* Namespace는 파스칼 표기법 사용
+	namespace System.Graphics
+* 클래스명에는 파스칼 표기법 사용
+	class SomeClass; struct SomeStruct;
+
+* 함수명에는 파스칼 표기법 사용
+	public uint GetAge()
+	{
+	  // function implementation...
+	}
+
+* 변수와 함수 매개변수에는 소문자 카멜표기법 사용
+	void SomeMethod(int someParameter)
+	{
+	  int someNumber;
+	}
+* Non-public 메소드일 경우 post fix로 "internal"을 붙인다.
+	Private uint GetAgeInternal()
+	{
+	  // function implementation...
+	}
+* 상수인자는 ALL_CAPS_SEPARATED_BY_UNDERSCORE를 사용
+	const int SOME_CONSTANT = 1;
+* 인터페이스에는 "I"가 시작되는 파스칼표기법 사용
+	interface ISomeInterface 
+	{
+
+	}
+*boolean 변수 앞에는 "b"를 붙이고 property 앞에는 "is"를 붙인다.
+	bool bFired;    // for local variable
+	Private bool mbFired;    // for private class member variable
+	Public bool IsFired { get; private set; }
+* enum 앞에는 "E"를 붙인다.
+	public enum EDirection
+	{
+	  North,
+	  South
+	}
+* private 멤버 변수 앞에 m을 붙인다.
+	Public class Employee
+	{
+	  public int DepartmentID { get; set; }
+	  private int mAge;
+	}
+* 함수명에 "_"를 사용하지 않는다
+* 설명적인 변수명을 사용
+* 두개의 문자의 경우 모두 대문자로 구분
+	public int ID { get; private set; }
+* 두개의 문자 이상인 경우 머리 글자로 된 첫 번째 문자만 대문자로 표시
+	public string HttpAddress { get; private set; }
+* getter setter 함수보다 property를 선
+	이거 대신에:
+	public class Employee
+	{
+	  private string mName;
+	  public string GetName();
+	  public string SetName(string name);
+	}
+
+	이렇게 사용해라:
+	public class Employee
+	{
+	  public string Name {get; set;}
+	}
+* 로컬변수가 사용되는 첫번째 행에 최대한 가깝게 선언
+* 새로운 줄에 항상 여는 중괄호 "{"를 넣기
+* scope에 단 하나의 줄이 있어도 중괄호 추가
+	if (bSomething)
+	{
+	  return;
+	}
+* 부동 소수점 값에 대한 정밀도 지정은 명시적으로 double이 필요하지 않는한 사용
+	float f = 0.5F;
+* switch문에는 항상 default가 있어야 함
+	switch (number)
+	{
+	  case 0:
+	    ... 
+	    break;
+	  default:
+	    break;
+	}
+* case문에 코드가 없는 경우를 제외하고는 switch case에 대한 fallthrough 설명 추가
+	switch (number)
+	{
+	 case 0:
+	   DoSomething();
+	   //fallthrough
+	 case 1:
+	   DoFallthrough();
+	   break;
+	 case 2:
+	 case 3:
+	   DoNotFallthrough();
+	   break;
+	 default:
+	   break;
+	}
+* 재귀함수의 이름은 "Recursive"로 끝남
+* 클래스 변수와 메소드의 순서는 아래와 같다
+	1. public variables
+	2. internal variables
+	3. protected variables
+`	4. private variables
+	5. public methods
+	6. Internal methods
+	7. protected methods
+	8. private methods
+* 함수 오버로딩은 왠만하면 사용하지 않음
+	이거 대신에:
+	Anim GetAnim(int index);
+	Anim GetAnim(string name);
+
+	이렇게 사용해라:
+	Anim GetAnimByIndex(int index);
+	Anim GetAnimByName(string name);
+* 파일이름은 대문자와 소문자를 포함한 클래스의 이름과 동일해야 함
+	class Anim {}
+
+	Anim.cs
+* 항상 System.Collections의 컨테이너보다 System.Collections.Generic의 컨테이너 사용
+* var 키워드 대신 실제 타입을 사용. Enumerator같은 경우에는 var를 사용
+* 싱글톤 패턴이 아닌 static class를 사용
+* async void 보다 async Task를 사용해라. async void는 오직 이벤트핸들러에서만 사용
+* public 함수에서는 특히 매개변수에서는 null을 허용하지 않음
+* 만약 함수 또는 매개변수에 null을 사용해야 하는 경우라면 함수 또는 매개변수 이름의 postfix로 OrNull을 붙이십시오
+* Private와 Protected 변수는 "_"로 시작
