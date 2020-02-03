@@ -1,0 +1,32 @@
+using System;
+using System.Threading;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            new Program().MyThread();
+        }
+
+        void MyThread()
+        {
+            // New Thread에서 Run() 실행
+            Thread t1 = new Thread(new ThreadStart(Run));
+            t1.Start();
+
+            // Main Thread에서 Run() 실행
+            Run();
+        }
+
+        void Run()
+        {
+            Console.WriteLine("Thread#{0}: Begin", Thread.CurrentThread.ManagedThreadId);
+
+            // Do Something
+            Thread.Sleep(3000);
+            Console.WriteLine("Thread#{0}: End", Thread.CurrentThread.ManagedThreadId); 
+        }
+    }
+}
