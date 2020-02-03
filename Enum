@@ -1,0 +1,36 @@
+using System;
+
+[Flags]
+enum Border
+{
+    None = 0,
+    Top = 1,
+    Right = 2,
+    Bottom = 3,
+    Left = 5
+}
+
+
+namespace MySystem
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            Border b = Border.Top | Border.Bottom;
+
+            if((b & Border.Top) != 0)
+            {
+                Console.WriteLine("value : {0}", (b & Border.Top));
+                // HasFlag()이용 플래그 체크
+                if(b.HasFlag(Border.Bottom))
+                {
+                    // Top, Bottom 출력
+                    Console.WriteLine(b.ToString());
+                }
+            }
+
+        }
+    }
+}
