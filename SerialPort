@@ -1,0 +1,38 @@
+using System;
+using System.IO.Ports;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // COM5 포트 설정
+            SerialPort sp = new SerialPort("COM2");
+
+            // DataReceived 이벤트 핸들러 지정
+            // 시리얼포트에 데이터가 도착하면 실행
+            sp.DataReceived += (sender, e) =>
+            {
+                SerialPort port = (SerialPort)sender;
+                // 현재까지 도착한 데이터 모두 읽기
+                String data = port.ReadExisting();
+
+                Console.WriteLine(data);
+
+            };
+
+            // Serial Port Open
+            sp.Open();
+
+            // Enter 누를때까지 프로그램 실행
+            Console.WriteLine("Serial Port Open");
+            Console.ReadLine();
+
+            // Serial Port Close
+            Console.WriteLine("Close Serial Port");
+            sp.Close();
+
+        }
+    }
+}
