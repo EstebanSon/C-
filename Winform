@@ -40,40 +40,106 @@ namespace MySystem
            form.Width = 2000;
            form.Height = 1200;
           
-           // 버튼 설정
+           // Button Conrol 설정
            Button Btn1 = new Button();
-           Btn1.Text = "Button";
+           Btn1.Text = "Button1";
            Btn1.Width = 200;
            Btn1.Height = 100;
            Btn1.Left = 50;
            Btn1.Top = 800;
 
            Button Btn2 = new Button();
-           Btn2.Text = "Button";
+           Btn2.Text = "Button2";
            Btn2.Width = 200;
            Btn2.Height = 100;
            Btn2.Left = 430;
            Btn2.Top = 800;
 
            Button Btn3 = new Button();
-           Btn3.Text = "Button";
+           Btn3.Text = "Button3";
            Btn3.Width = 200;
            Btn3.Height = 100;
            Btn3.Left = 800;
            Btn3.Top = 800;
 
-           // Label 설정
+           // Label Control 설정
            Label label1 = new Label();
-           label1.Size = new Size(100, 100);
-           label1.Text = "TEST";
+           string LabelName = "Label1";
+           label1.Size = new Size(100, 800);
+           label1.Text = LabelName;
+           label1.Left = 30;
+           label1.Top = 200;
+           label1.TextAlign = ContentAlignment.MiddleCenter;
+           label1.Font = AutoFontSize(label1, LabelName);
 
+           // ListView Control 설정
+           ListView listView1 = new ListView();
+           listView1.Bounds = new Rectangle(new Point(10,10), new Size(300,200));
+
+            // Set the view to show details.
+            listView1.View = View.Details;
+            // Allow the user to edit item text.
+            listView1.LabelEdit = true;
+            // Allow the user to rearrange columns.
+            listView1.AllowColumnReorder = true;
+            // Display check boxes.
+            listView1.CheckBoxes = true;
+            // Select the item and subitems when selection is made.
+            listView1.FullRowSelect = true;
+            // Display grid lines.
+            listView1.GridLines = true;
+            // Sort the items in the list in ascending order.
+            listView1.Sorting = SortOrder.Ascending;
+
+
+           ListViewItem item1 = new ListViewItem("item1", 0);
+
+           item1.Checked = true;
+           item1.SubItems.Add("1");
+           item1.SubItems.Add("2");
+           item1.SubItems.Add("3");
+
+           listView1.Columns.Add("Item Column", -2, HorizontalAlignment.Left);
+
+           listView1.Items.AddRange(new ListViewItem[]{item1});
+
+           // Picture Box 설정
+           PictureBox Picture1 = new PictureBox();
+           Picture1.Image = System.Drawing.Image.FromFile(@"C:\SON.jpeg");
+           Picture1.SizeMode = PictureBoxSizeMode.AutoSize;
+           Picture1.Left = 500;
            
-
+           form.Controls.Add(listView1);
            form.Controls.Add(Btn1);
            form.Controls.Add(Btn2);
            form.Controls.Add(Btn3);
+           form.Controls.Add(label1);
 
+           form.Controls.Add(Picture1);
            form.ShowDialog();
+        }
+
+        static Font AutoFontSize(Label label, String text)
+        {
+            Font ft;
+            Graphics gp;
+            SizeF sz;
+            Single Faktor, FaktorX, FaktorY;
+
+            gp = label.CreateGraphics();
+            sz = gp.MeasureString(text, label.Font);
+            gp.Dispose();
+           
+            FaktorX = (label.Width) / sz.Width;
+            FaktorY = (label.Height) / sz.Height;
+
+            if (FaktorX > FaktorY)
+                Faktor = FaktorY;
+            else
+                Faktor = FaktorX;
+            ft = label.Font;
+           
+            return new Font(ft.Name, ft.SizeInPoints * (Faktor) - 1);
         }
     }
 
