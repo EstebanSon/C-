@@ -1,0 +1,51 @@
+using System;
+using System.Text;
+using System.Threading;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 초기 메모리
+            long mem = GC.GetTotalMemory(false);
+            Console.WriteLine("Initial Memory : {0}", mem);
+
+            // 특정 함수 호출
+            new Program().MyThread();
+
+            // 함수 호출 후 메모리
+            mem = GC.GetTotalMemory(false);
+            Console.WriteLine("Current Memory : {0}", mem);
+
+            // 메모리 Clean Up
+            GC.Collect();
+            Thread.Sleep(5000);
+
+            // 메모리 Clean Up 후
+            mem = GC.GetTotalMemory(false);
+            Console.WriteLine("After GC Memory : {0}", mem);            
+        }
+
+        void MyThread()
+        {
+            // New Thread에서 Run() 실행
+            Thread t1 = new Thread(new ThreadStart(Run));
+            t1.Start();
+
+            // Main Thread에서 Run() 실행
+            Run();
+        }
+
+        void Run()
+        {
+            Console.WriteLine("Thread#{0}: Begin", Thread.CurrentThread.ManagedThreadId);
+
+            // Do Something
+            Thread.Sleep(3000);
+            Console.WriteLine("Thread#{0}: End", Thread.CurrentThread.ManagedThreadId); 
+        }
+
+    }
+}
