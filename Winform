@@ -1,0 +1,80 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace MySystem
+{
+    class MyForm : Form
+    {
+        public MyForm()
+        {
+            this.MouseClick += delegate { MyAreaClicked(); };
+        }
+
+        public delegate void ClickEvent(object sender);
+
+        // Event 필드
+        public event ClickEvent MyClick;
+        
+        // 예제를 단순화 하기위해
+        // MyArea가 클릭되면 아래 함수가 호출된다고 가정
+        void MyAreaClicked()
+        {
+            if(MyClick != null)
+            {
+                MyClick(this);
+            }
+        }
+    }
+    
+    class Program
+    {
+        static MyForm form;
+
+        static void Main(string[] args)
+        {
+           form = new MyForm();
+           form.Text += "AUTOMATION PROGRAM 0.0.1";
+
+           // Form 사이즈 변경
+           form.Width = 2000;
+           form.Height = 1200;
+          
+           // 버튼 설정
+           Button Btn1 = new Button();
+           Btn1.Text = "Button";
+           Btn1.Width = 200;
+           Btn1.Height = 100;
+           Btn1.Left = 50;
+           Btn1.Top = 800;
+
+           Button Btn2 = new Button();
+           Btn2.Text = "Button";
+           Btn2.Width = 200;
+           Btn2.Height = 100;
+           Btn2.Left = 430;
+           Btn2.Top = 800;
+
+           Button Btn3 = new Button();
+           Btn3.Text = "Button";
+           Btn3.Width = 200;
+           Btn3.Height = 100;
+           Btn3.Left = 800;
+           Btn3.Top = 800;
+
+           // Label 설정
+           Label label1 = new Label();
+           label1.Size = new Size(100, 100);
+           label1.Text = "TEST";
+
+           
+
+           form.Controls.Add(Btn1);
+           form.Controls.Add(Btn2);
+           form.Controls.Add(Btn3);
+
+           form.ShowDialog();
+        }
+    }
+
+}
