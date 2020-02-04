@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            FileStream fileStr = File.Create("Temp.txt");
+            FileInfo fileInformation = new FileInfo("fileInfo.txt");
+            FileStream fileStr2 = fileInformation.Create();
+
+            fileStr.Close();
+            fileStr2.Close();
+            File.Copy("Temp.txt", "fileCopy.txt");
+            FileInfo dst = fileInformation.CopyTo("Copy.txt");
+
+        }
+    }
+}
