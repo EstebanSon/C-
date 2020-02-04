@@ -1,0 +1,33 @@
+using System;
+using System.Text;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // String을 Char[] 변환
+            string str = "Hello C#";
+            char [] uchars = str.ToCharArray();
+            
+            // String을 바이트로 직접 변환할 수 없으며, Encoding을 통해 변환 가능
+            byte[] ubytes = System.Text.Encoding.Unicode.GetBytes(str);
+
+            // UTF8 인코딩.
+            byte[] utf8bytes = System.Text.Encoding.UTF8.GetBytes(str);
+
+            // Byte Array -> String으로 변환
+            string str1 = Encoding.Unicode.GetString(ubytes);
+            string str2 = Encoding.UTF8.GetString(utf8bytes);
+
+            Console.WriteLine("ByteArray -> String str1 : {0}", str1);
+            Console.WriteLine("ByteArray -> String str2 : {0}", str2);
+
+            // char[] -> String
+            char[] charArray = {'b', 'b', 'b', 'b', 'b'};
+            string str3 = new string(charArray);
+            Console.WriteLine("char[] -> String str3 : {0}", str3);
+        }
+    }
+}
