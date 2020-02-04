@@ -1,0 +1,37 @@
+using System;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 2진수 -> 10진수 변환
+            string strBase2_1 = "011011101110";
+            int iBase10 = Convert.ToInt32(strBase2_1, 2);
+
+            // 10진수 -> 16진수 변환
+            string strHex = Convert.ToString(iBase10, 16);
+
+            // 10진수 -> 16진수 변환
+            string strHex2 = iBase10.ToString("X4");
+
+            // 10진수 -> 16진수 변환
+            string strHex3 = string.Format("{0:X4}", iBase10);
+
+            // 16진수 -> 10진수
+            int iBase10_2 = Convert.ToInt32(strHex3, 16);
+
+            // 10진수 -> 2진수
+            string strBase2_2 = Convert.ToString(iBase10, 2);
+
+            Console.WriteLine("2진수 -> 10진수 : {0}", iBase10);
+            Console.WriteLine("2진수 : {0}", strBase2_1);
+            Console.WriteLine("10진수 -> 16진수 : {0}", strHex);
+            Console.WriteLine("10진수 -> 16진수 : {0}", strHex2);
+            Console.WriteLine("10진수 -> 16진수 : {0}", strHex3);
+            Console.WriteLine("16진수 -> 10진수 : {0}", iBase10_2);
+            Console.WriteLine("10진수 -> 2진수 : {0}", strBase2_2);
+        }
+    }
+}
