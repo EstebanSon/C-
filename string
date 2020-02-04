@@ -1,0 +1,67 @@
+using System;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 문자열 추가 string Add
+            string str = "문자열 파싱";
+            str = str.Insert(str.Length, " 입니다");
+            Console.WriteLine(str);
+            Console.ReadLine();
+            
+            // 문자열 병합 string Merge
+            string str2 = String.Concat("abcdefg", "hijklmnopqr", "stuvwxyz");
+            Console.WriteLine(str2);
+            
+            //  문자열 검색 search string
+            int IndexValue = str2.IndexOf("아");
+            Console.WriteLine(IndexValue);
+            
+            // 자를 문자열 split string
+            Console.WriteLine(str2.Substring(2));
+
+            // 문자열 변환 Convert string
+            string str3 = "Tom\r\nis\r\nworked";
+            Console.WriteLine(str3);
+            Console.WriteLine(str3.Replace("\r\n", ""));
+
+            // 문자열 인덱스 호출 string indoex out
+            string str5 = "ABCDEFGHIJKLMNOPQRS";
+            Console.WriteLine(str5[1]);
+            
+            /*
+                CompareTo //특정 객체와 비교
+                CopyTo //객체 복사
+                EndsWith //특정 문자열로 끝나는지를 확인
+                Equals //비교 연산
+                GetEnumerator //IEnumerator 인터페이스 반환
+                GetHashCode //해쉬 코드 반환
+                GetType //형식 정보 반환
+                GetTypeCode //TypeCode 반환
+                IndexOf //문자열 검색
+                IndexOfAny //유니코드 문자열에서 먼저 나오는 문자 반환
+                Insert //문자열 삽입
+                LastIndexOf //IndexOf를 뒤에서부터 수행
+                LastIndexOfAny //IndexOfAny를 뒤에서부터 수행
+                PadLeft //문자열에서 남아있는 왼쪽을 빈 공백으로 채움
+                PadRight //문자열에서 남아있는 오른쪽을 빈 공백으로 채움
+                Remove //지정 개수의 문자 제거
+                Replace //문자열 치환
+                Split //문자열 분리하여 배열로 반환
+                StartsWith //특정 문자로 시작하는지를 확인
+                Substring //문자열 추출
+                ToCharArray //문자 배열로 변환
+                ToLower //소문자로 변환
+                ToString //객체를 나타내는 문자열 반환
+                ToUpper //대문자로 변환
+                Trim //양쪽 공백 없앰
+                TrimEnd //문자열 끝 부분의 공백 없앰
+                TrimStart //문자열 시작 부분의
+            */
+
+        }
+    }
+}
