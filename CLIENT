@@ -1,0 +1,35 @@
+using System;
+using System.Net.Sockets;
+using System.Text;
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // IP주소와 포트를 지정
+            TcpClient tc = new TcpClient("127.0.0.1", 8000);
+
+            string msg  = "NewPower Automation";
+            byte [] buff = Encoding.ASCII.GetBytes(msg);
+
+            // NetworkStream을 얻어옴
+            NetworkStream stream = tc.GetStream();
+
+            // Stream에 바이트 데이터 전송
+            stream.Write(buff, 0, buff.Length);
+
+            // Stream으로부터 바이트 데이터 읽기
+            byte[] outbuf = new byte [1024];
+            int nbytes = stream.Read(outbuf, 0, outbuf.Length);
+            string output = Encoding.ASCII.GetString(outbuf, 0, nbytes);
+
+            // Stream과 TcpClient 객체담기
+            stream.Close();
+            tc.Close();
+
+            Console.WriteLine("{0} bytes: {1}", nbytes, Encoding.Default.GetString(outbuf));
+        }
+    }
+}
