@@ -1,0 +1,120 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Text;
+
+
+namespace MySystem
+{
+    class Program
+    {
+        //TcpListener listener = null;
+        // TcpClient clientSocket = null;
+        static void Main(string[] args)
+        {
+           Thread t = new Thread(() => InitSocket());
+           Console.WriteLine("Main Thread");
+           t.Start();
+        }
+
+        public static void InitSocket()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, 8000);
+            listener.Start();
+            Console.WriteLine("TCP Start!!");
+            TcpClient tc = listener.AcceptTcpClient();
+            Console.WriteLine("TCP Client Start!!");
+            
+            byte [] buff = new byte[1024];
+
+            while(true)
+            {
+                Thread.Sleep(5000);
+                try
+                {
+                    Console.WriteLine("Stream Read Start");
+                    NetworkStream stream = tc.GetStream();
+
+                    // Client가 연결을 끊을 때까지 데이터 수신
+                    int nbytes;
+                    int IntValue = 0;
+                    while((nbytes = stream.Read(buff, 0, buff.Length)) > 0)
+                    {
+                        // 데이터 송신
+                        stream.Write(buff, 0, nbytes);
+                        Console.WriteLine("nbytes : {0}", nbytes);
+                        IntValue = IntValue + nbytes;
+                    }
+
+                    Console.WriteLine("buff[0] : {0}", buff[0]);
+                    if(buff[0] == '1')
+                    {
+                        Console.WriteLine("Client Disconnect");
+                        break;
+                    }
+
+                    string output = Encoding.ASCII.GetString(buff, 0, IntValue);
+
+                    Console.WriteLine("Client Msg : {0}",IntValue, output);
+                    Console.WriteLine("tc.Connected : {0}", tc.Connected);
+                }
+                catch (SocketException se)
+                {
+                    Console.WriteLine("Socket Exception!!");
+                    break;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Exception !!");
+                    break;
+                }
+            }
+        }
+    }
+
+        /*
+
+        async static Task AysncEchoServer()
+        {
+            listener = new TcpListener(IPAddress.Any, 8000);
+            listener.Start();
+            Console.WriteLine("AsyncEchoServer");
+            while(true)
+            {
+                // 비동기 Accept
+                TcpClient tc = await listener.AcceptTcpClientAsync().ConfigureAwait(false);
+
+                // New Thread 처리
+                Task.Factory.StartNew(AsyncTcpProcess, tc);
+            }
+        }
+
+        async static void AsyncTcpProcess(object o)
+        {
+            TcpClient tc = (TcpClient)o;
+
+            int MAX_SIZE = 1024;
+            NetworkStream stream = tc.GetStream();
+
+            Console.WriteLine("Async TCP Process!!");
+
+            // 비동기 수신
+            var buff = new byte [MAX_SIZE];
+            var nbytes = await stream.ReadAsync(buff, 0, buff.Length).ConfigureAwait(false);
+            if(nbytes > 0)
+            {
+                string msg = Encoding.ASCII.GetString(buff, 0, nbytes);
+                Console.WriteLine("{0} at {1}", msg, DateTime.Now);
+
+                // 비동기 송신
+                await stream.WriteAsync(buff, 0, nbytes).ConfigureAwait(false);
+            }
+
+            stream.Close();
+            tc.Close();
+        }
+
+    */
+}
