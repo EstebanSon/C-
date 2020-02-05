@@ -1,0 +1,51 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 로컬 포트 Listenner 생성
+            TcpListener listener = new TcpListener(IPAddress.Any, 8000);
+            listener.Start();
+
+            byte [] buff = new byte[1024];
+            string data = null;
+
+            while(true)
+            {
+                // Client Connection 요청확인
+                // 서버에서 새 TcpClient 객체 생성 후 리턴
+                TcpClient tc = listener.AcceptTcpClient();
+
+                // TcpClient 객체에서 NetworkStream을 얻음
+                NetworkStream stream = tc.GetStream();
+
+                // Client가 연결을 끊을 때까지 데이터 수신
+                int nbytes;
+                int IntValue = 0;
+                while((nbytes = stream.Read(buff, 0, buff.Length)) > 0)
+                {
+                    // 데이터 송신
+                   stream.Write(buff, 0, nbytes);
+                   Console.WriteLine("nbytes : {0}", nbytes);
+                    IntValue = IntValue + nbytes;
+                }
+
+                string output = Encoding.ASCII.GetString(buff, 0, IntValue);
+
+                Console.WriteLine("Client IntValue : {0} Msg : {1}",IntValue, output);
+
+                // Stream과 TcpClient 객체
+                stream.Close();
+                tc.Close();
+            }
+
+        }
+    }
+}
