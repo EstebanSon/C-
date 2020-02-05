@@ -1,0 +1,99 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace MySystem
+{
+    class MyForm : Form
+    {
+        Button Btn1 = new Button();
+
+        public MyForm()
+        {
+            this.FormClosing += MyForm_FormClosing;
+            // Button1 SET
+            SetButtonName(Btn1, "Button1");
+            SetButtonSize(Btn1, 200, 100);
+            SetButtonPostion(Btn1, 50, 800);
+
+            //
+            this.Controls.Add(Btn1);
+        }
+
+        public delegate void ClickEvent(object sender);
+
+        void SetButtonName(Button Btn, string StrName)
+        {
+            Btn.Text = StrName;
+        }
+
+        void SetButtonSize(Button Btn, int Width, int Height)
+        {
+           // Button Conrol 설정
+           Btn.Width = Width;
+           Btn.Height = Height;
+        }
+
+        void SetButtonPostion(Button Btn, int X, int Y)
+        {
+            Btn.Left = X;
+            Btn.Top = Y;
+        }
+
+        void MyForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MessageBox.Show("Close Event");
+            
+            System.Diagnostics.Process[] mProcess = System.Diagnostics.Process.GetProcessesByName(Application.ProductName);
+                foreach (System.Diagnostics.Process p in mProcess)
+                    p.Kill();
+        }
+    }
+    
+    class Program
+    {
+        static MyForm form;
+
+        static void Main(string[] args)
+        {
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+           form = new MyForm();
+           form.Text += "AUTOMATION PROGRAM 0.0.1";
+
+           // Form 사이즈 변경
+           form.Width = 2000;
+           form.Height = 1200;
+
+           form.ShowDialog();
+        }
+
+        static Font AutoFontSize(Label label, String text)
+        {
+            Font ft;
+            Graphics gp;
+            SizeF sz;
+            Single Faktor, FaktorX, FaktorY;
+
+            gp = label.CreateGraphics();
+            sz = gp.MeasureString(text, label.Font);
+            gp.Dispose();
+           
+            FaktorX = (label.Width) / sz.Width;
+            FaktorY = (label.Height) / sz.Height;
+
+            if (FaktorX > FaktorY)
+                Faktor = FaktorY;
+            else
+                Faktor = FaktorX;
+            ft = label.Font;
+           
+            return new Font(ft.Name, ft.SizeInPoints * (Faktor) - 1);
+        }
+
+        static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }        
+    }
+
+}
