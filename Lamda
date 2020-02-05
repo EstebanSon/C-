@@ -1,16 +1,36 @@
 using System;
 
-namespace MySystem
-{
-    delegate int Calculate(int number1, int number2);
+class Lamda
+{ 
+    delegate int Calculate(int a, int b);
+    
+    delegate void DoSomething();
 
-    class Program
+    public static void Main(string[] args) 
     {
-        static void Main(string[] args)
+        // 입력 파라미터가 1~2개 있는 경우
+        Calculate cal1 = (int a, int b) => a + b;
+        Console.WriteLine("{0} + {1} = {2}", 3, 5, cal1(3,5));
+        
+        // 입력 파라미터가 없는 경우
+        Calculate cal2 = (a, b) => a + b;
+        Console.WriteLine("{0} + {1} + {2}", 1, 2, cal2(1,2));
+
+        // 입력 파라미터 타입을 명시하는 경우
+        Calculate cal3 = delegate(int a, int b) { return a + b; };
+        Console.WriteLine("Delegate : {0} + {1}  = {2}", 6, 7, cal3(6,7));
+        
+        // 문 형식의 경우
+        DoSomething DoIt = ()=>
         {
-            // 람다식은 Anonymous function을 표현하는데 사용
-            Calculate cal1 = (int number1, int number2) => number1 + number2;
-            Console.WriteLine("{0} + {1} = {2}", 1, 2, cal1(1,2));
-        }
-    }
+            Console.WriteLine("AAA");
+            Console.WriteLine("BBB");
+            Console.WriteLine("CCC");
+        };
+
+        DoIt();
+
+        Console.ReadLine();
+    } 
+
 }
