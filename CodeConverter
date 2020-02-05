@@ -6,21 +6,34 @@ namespace MySystem
 {
     class MyForm : Form
     {
+        string[] strCodeList = {"Decimal", "Binary", "Hex", "CHAR", "Base64"};
+
         Button Btn1 = new Button();
+        ComboBox CodeNameBox = new ComboBox(); 
 
         public MyForm()
         {
             this.FormClosing += MyForm_FormClosing;
-            // Button1 SET
+            this.Load += MyForm_Load;
+
+            // Button1 SET-UP
             SetButtonName(Btn1, "Button1");
             SetButtonSize(Btn1, 200, 100);
             SetButtonPostion(Btn1, 50, 800);
 
-            //
+            // ComboBox SET-UP
+            CodeNameBox.Items.AddRange(strCodeList);
+            CodeNameBox.SelectedIndex = 0;
+            
+            this.Controls.Add(CodeNameBox);
             this.Controls.Add(Btn1);
         }
 
-        public delegate void ClickEvent(object sender);
+        private void MyForm_Load(object sender, EventArgs e)
+        {
+            // Form Load Function
+            
+        }
 
         void SetButtonName(Button Btn, string StrName)
         {
@@ -42,11 +55,8 @@ namespace MySystem
 
         void MyForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("Close Event");
-            
-            System.Diagnostics.Process[] mProcess = System.Diagnostics.Process.GetProcessesByName(Application.ProductName);
-                foreach (System.Diagnostics.Process p in mProcess)
-                    p.Kill();
+            // Form Close Function
+            //MessageBox.Show("Close Event");
         }
     }
     
@@ -56,7 +66,6 @@ namespace MySystem
 
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
            form = new MyForm();
            form.Text += "AUTOMATION PROGRAM 0.0.1";
 
@@ -88,12 +97,7 @@ namespace MySystem
             ft = label.Font;
            
             return new Font(ft.Name, ft.SizeInPoints * (Faktor) - 1);
-        }
-
-        static void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }        
+        }     
     }
 
 }
