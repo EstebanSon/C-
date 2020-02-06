@@ -1,0 +1,53 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{ 
+    public static void Main(string[] args) 
+    {
+        // 매개변수 없는 ThreadStart
+        Thread t1 = new Thread(new ThreadStart(Run));
+        t1.Start();
+
+        // ParameterizedThreadStart 매개변수 전달
+        Thread t2 = new Thread(new ParameterizedThreadStart(Calc));
+        t2.Start(10.00);
+
+        // ThreadStart에서 매개변수 전달
+        Thread t3 = new Thread(() => Sum(10, 20, 30));
+        t3.Start();
+
+        Helper obj = new Helper();
+        Thread t5 = new Thread(obj.HelpRun);
+        t5.Start();
+    }
+
+    static void Run()
+    {
+        Console.WriteLine("Run");
+    }
+
+    // radius라는 매개변수를 object 타입으로 받음
+    static void Calc(object radius)
+    {
+        double d = (double)radius;
+        double area = d * d * 3.14;
+        Console.WriteLine("d={0}, area={1}", d, area);
+    }
+
+    static void Sum(int int1, int int2, int int3)
+    {
+        int sum = int1 + int2 + int3;
+        Console.WriteLine(sum);
+    }
+
+}
+
+class Helper
+{
+    public void HelpRun()
+    {
+        Console.WriteLine("Help Run");
+    }
+}
