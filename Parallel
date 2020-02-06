@@ -1,0 +1,98 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+class Program
+{
+    const int MAX = 10000000;
+    const int SHIFT = 3;
+
+    public static void Main(string[] args) 
+    {
+        Console.WriteLine("Sequential Encrypt Start");
+        SequentialEncrypt();
+        Console.WriteLine("Sequential Encrypt End");
+        Console.WriteLine("Parallel Encrypt Start");
+        ParallelEncrypt();       
+        Console.WriteLine("Parallel Encrypt End");
+    } 
+
+    static void SequentialEncrypt()
+    {
+        // Test Data SET-UP
+        // 1000만개의 Stream
+        string text = "I am a boy. My name is Tom";
+        List<string> textList = new List<string>(MAX);
+        for(int i = 0 ; i < MAX; i++)
+        {
+            textList.Add(text);
+        }
+
+        // Sequential Process
+        System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        for(int i = 0; i < MAX; i++)
+        {
+            char[] charArr = textList[i].ToCharArray();
+            
+            // 모든 문자를 시저 암호화
+            for(int y = 0; y < charArr.Length; y++)
+            {
+                // 시저 암호화
+                if(charArr[y] >= 'a' && charArr[y] <= 'z')
+                {
+                    charArr[y] = (char)('a' + ((charArr[y] - 'a' + SHIFT) % 26));
+                }
+                else if(charArr[y] >= 'A' && charArr[y] <= 'Z')
+                {
+                    charArr[y] = (char)('A' + ((charArr[y] - 'A' + SHIFT) % 26));
+                }
+            }
+
+            // 변경된 암호로 치환
+            textList[i] = new String(charArr);
+        }
+        watch.Stop();
+        Console.WriteLine(watch.Elapsed.ToString());
+    }
+
+    static void ParallelEncrypt()
+    {
+        // Test Data SET-UP
+        // 1000만개의 Stream
+        string text = "I am a boy. My name is Tom";
+        List<string> textList = new List<string>(MAX);
+        for(int i = 0; i < MAX; i++)
+        {
+            textList.Add(text);
+        }
+
+        // 병렬 처리
+        System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+        Parallel.For(0, MAX, i =>
+        {
+            char[] charArr = textList[i].ToCharArray();
+
+            // 모든 문자를 시저 암호화
+            for(int j = 0; j < charArr.Length; j++)
+            {
+                if(charArr[j] >= 'a' && charArr[j] <= 'z')
+                {
+                    charArr[j] = (char)('a' + ((charArr[j] - 'a' + SHIFT) % 26));
+                }
+                else if(charArr[j] >= 'A' && charArr[j] <= 'Z')
+                {
+                    charArr[j] = (char)('A' + ((charArr[j] - 'A' + SHIFT) % 26));
+                }
+            }
+
+            // 변경된 암호로 치환
+            textList[i] = new String(charArr);
+        });
+        watch.Stop();
+        Console.WriteLine(watch.Elapsed.ToString());
+    }
+
+}
