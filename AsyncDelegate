@@ -1,0 +1,30 @@
+using System;
+
+class Program
+{ 
+    public static void Main(string[] args) 
+    {
+        // GetArea() 메소드를 사용하여 .NET의  Func Delegate 인스턴스 생성
+        // Func의 처음 2개 int는 입력, 마지막 int는 출력
+        Func<int, int, int> work = GetArea;
+
+        // Delegate객체로부터 BeginInvoke() 실행
+        // 두 개의 입력 매개변수 10, 20
+        IAsyncResult asyncRes = work.BeginInvoke(10, 20, null, null);
+
+        Console.WriteLine("Do something in Main thread");
+
+        // Delegate객체로부터 EndInvoke(IAsyncResult) 실행
+        // EndInvoke는 Thread가 완료되길 대기 후 리턴
+        int result = work.EndInvoke(asyncRes);
+
+        Console.WriteLine("Result : {0}", result);
+    }
+
+    static int GetArea(int height, int width)
+    {
+        int area = height * width;
+        return area;
+    }
+
+}
