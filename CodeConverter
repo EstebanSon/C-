@@ -6,28 +6,127 @@ namespace MySystem
 {
     class MyForm : Form
     {
-        string[] strCodeList = {"Decimal", "Binary", "Hex", "CHAR", "Base64"};
+        string[] strCodeList = {"Decimal", "Binary", "Hex", "Char", "Base64"};
+        string strInitGuide = "변환할 값을 입력하세요.";
+        string strResult = "No Value";
+
+        int CodeIndex = 0;
+        int ResultIndex = -1;
 
         Button Btn1 = new Button();
-        ComboBox CodeNameBox = new ComboBox(); 
+        Button ChangeBtn = new Button(); 
+
+        ComboBox CodeBox = new ComboBox();
+        ComboBox ResultBox = new ComboBox();
+
+        GroupBox CodeGroupBox = new GroupBox();
+
+        private TextBox _InBox = new TextBox();
+        private TextBox _OutBox = new TextBox();
 
         public MyForm()
         {
+            // 윈폼 종료 이벤트 추가
             this.FormClosing += MyForm_FormClosing;
             this.Load += MyForm_Load;
 
             // Button1 SET-UP
-            SetButtonName(Btn1, "Button1");
+            SetButtonName(Btn1, "Convert");
             SetButtonSize(Btn1, 200, 100);
-            SetButtonPostion(Btn1, 50, 800);
+            SetButtonPostion(Btn1, 650, 600);
 
             // ComboBox SET-UP
-            CodeNameBox.Items.AddRange(strCodeList);
-            CodeNameBox.SelectedIndex = 0;
-            
-            this.Controls.Add(CodeNameBox);
-            this.Controls.Add(Btn1);
+            SetComboBoxPosition(CodeBox, 250, 20);
+            SetComboBoxPosition(ResultBox, 650, 20);
+
+            // GroupBox SET-UP
+            CodeGroupBox.Text = "InCoding Function";
+            CodeGroupBox.Left = 50;
+            CodeGroupBox.Top = 20;
+            CodeGroupBox.Width = 900;
+            CodeGroupBox.Height = 720;
+
+            CodeBox.Items.AddRange(strCodeList);
+            ResultBox.Items.AddRange(strCodeList);
+            CodeBox.SelectedIndex = CodeIndex;
+          
+            this.Controls.Add(CodeGroupBox);
+            CodeGroupBox.Controls.Add(CodeBox);
+            CodeGroupBox.Controls.Add(ResultBox);
+            CodeGroupBox.Controls.Add(Btn1);
         }
+
+        private void ResultBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ResultIndex = ResultBox.SelectedIndex;
+        }
+
+        private void CodeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CodeIndex = CodeBox.SelectedIndex;
+        }
+        
+        // TextBox Mouse Event 메소드
+        private void _InBox_MouseClick(object sender, EventArgs e)
+        {
+            string str = _InBox.Text;
+            if(str == strInitGuide)
+                _InBox.Text = "";
+        }
+
+        private void Btn1_Click(object sender, EventArgs e)
+        {
+            if(ResultIndex == -1)
+            {
+                MessageBox.Show("Select Result Code");
+                return;
+            }            
+            else if(CodeIndex == -1)
+            {
+                MessageBox.Show("Select Convert Code");
+                return;
+            }
+
+            strResult = ConvertCodeHandler(CodeIndex, ResultIndex);
+            _OutBox.Text = strResult;
+        }
+
+        public void RegisterFunc()
+        {
+            CodeBox.SelectedIndexChanged += CodeBox_SelectedIndexChanged;
+            ResultBox.SelectedIndexChanged += ResultBox_SelectedIndexChanged;
+            Btn1.Click += Btn1_Click;
+        }
+
+        public void SetTextBox()
+        {
+            // Mouse 이벤트 추가
+            _InBox.Click += _InBox_MouseClick;
+
+            _InBox.AutoSize = false;
+            _OutBox.AutoSize = false;
+            _OutBox.ReadOnly = true;
+
+            _InBox.MaxLength = 100;
+            _OutBox.MaxLength = 100;
+
+            _InBox.Width = 300;
+            _InBox.Height = 500;
+            _OutBox.Width = 300;
+            _OutBox.Height = 500;
+
+            _InBox.Left = 150;
+            _InBox.Top = 50;
+
+            _OutBox.Left = 550;
+            _OutBox.Top = 50;
+
+            _InBox.Text = strInitGuide;
+            _OutBox.Text = strResult;
+
+            CodeGroupBox.Controls.Add(_InBox);
+            CodeGroupBox.Controls.Add(_OutBox);
+        } 
 
         private void MyForm_Load(object sender, EventArgs e)
         {
@@ -53,24 +152,31 @@ namespace MySystem
             Btn.Top = Y;
         }
 
+        void SetComboBoxPosition(ComboBox comBox, int X, int Y)
+        {
+            comBox.Left = X;
+            comBox.Top = Y;
+        }
+
         void MyForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Form Close Function
-            //MessageBox.Show("Close Event");
         }
     }
     
     class Program
     {
-        static MyForm form;
+        static MyForm form = new MyForm();
 
         static void Main(string[] args)
         {
-           form = new MyForm();
            form.Text += "AUTOMATION PROGRAM 0.0.1";
 
+           form.SetTextBox();
+           form.RegisterFunc();
+
            // Form 사이즈 변경
-           form.Width = 2000;
+           form.Width = 1000;
            form.Height = 1200;
 
            form.ShowDialog();
