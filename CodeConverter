@@ -2,8 +2,19 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
+
+
 namespace MySystem
 {
+    public enum EnumConvert
+    {
+        DECIMAL_TYPE = 0,
+        BINARY_TYPE,
+        HEX_TYPE,
+        CHAR_TYPE,
+        BASE64_TYPE,
+    }
+    
     class MyForm : Form
     {
         string[] strCodeList = {"Decimal", "Binary", "Hex", "Char", "Base64"};
@@ -40,7 +51,7 @@ namespace MySystem
             SetComboBoxPosition(ResultBox, 650, 20);
 
             // GroupBox SET-UP
-            CodeGroupBox.Text = "InCoding Function";
+            CodeGroupBox.Text = "Base Converter Function";
             CodeGroupBox.Left = 50;
             CodeGroupBox.Top = 20;
             CodeGroupBox.Width = 900;
@@ -89,6 +100,86 @@ namespace MySystem
 
             strResult = ConvertCodeHandler(CodeIndex, ResultIndex);
             _OutBox.Text = strResult;
+        }
+
+        string ConvertCodeHandler(int codeNumber, int convertNumber)
+        {
+            string strReturn = "";
+            
+            switch(convertNumber)
+            {
+                case (int)EnumConvert.DECIMAL_TYPE:
+                    strReturn = ConvertDecimalFunc(codeNumber);
+                    break;
+                
+                case (int)EnumConvert.BINARY_TYPE:
+                    strReturn = ConvertBinaryFunc(codeNumber);
+                    break;
+                case (int)EnumConvert.HEX_TYPE:
+                    strReturn = ConvertHexFunc(codeNumber);
+                    break;
+                default:
+                    strReturn = "";
+                    break;
+            }
+
+            return strReturn;
+        }
+
+        string ConvertDecimalFunc(int codeNumber)
+        {
+            string strDec = "";
+
+            switch(codeNumber)
+            {
+                case (int)EnumConvert.DECIMAL_TYPE:
+                    strDec = _InBox.Text;
+                    break;
+                case (int)EnumConvert.BINARY_TYPE:
+                    strDec = Convert.ToString(Convert.ToInt32(_InBox.Text), 2);
+                    break;  
+                case (int)EnumConvert.HEX_TYPE:
+                    strDec = Convert.ToString(Convert.ToInt32(_InBox.Text), 16);
+                    break;
+
+            }
+
+            return strDec;
+        }
+
+        string ConvertBinaryFunc(int codeNumber)
+        {
+            string strBin = "";
+
+            switch(codeNumber)
+            {
+                case (int)EnumConvert.DECIMAL_TYPE:
+                    strBin = Convert.ToString(Convert.ToInt32(_InBox.Text), 2);
+                    break;
+                case (int)EnumConvert.BINARY_TYPE:
+                    strBin = _InBox.Text;
+                    break;
+                case (int)EnumConvert.HEX_TYPE:
+                    strBin = Convert.ToString(Convert.ToInt32(_InBox.Text, 16), 2);
+                    break;
+            }
+
+            return strBin;
+
+        }
+
+        string ConvertHexFunc(int codeNumber)
+        {
+            string strHex = "";
+
+            switch(codeNumber)
+            {
+                case (int)EnumConvert.DECIMAL_TYPE:
+                    strHex = Convert.ToInt32(_InBox.Text).ToString("X4");
+                    break;
+            }
+
+            return strHex;
         }
 
         public void RegisterFunc()
