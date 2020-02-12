@@ -1,0 +1,82 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+
+
+namespace MySystem
+{   
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Facade facade = new Facade();
+
+            facade.MethodA();
+            facade.MethodB();
+
+            Console.ReadKey();
+        }
+    }
+
+    class SubSystemOne
+    {
+        public void MethodOne()
+        {
+            Console.WriteLine(" SubSystemOne Method ");
+        }
+    }
+
+    class SubSystemTwo
+    {
+        public void MethodTwo()
+        {
+            Console.WriteLine(" SubSystemTwo Method ");
+        }
+    }
+
+    class SubSystemThree
+    {
+        public void MethodThree()
+        {
+            Console.WriteLine(" SubSystemThree Method ");
+        }
+    }
+
+    class Facade
+    {
+        private SubSystemOne _one;
+        private SubSystemTwo _two;
+        private SubSystemThree _three;
+
+        public Facade()
+        {
+            _one = new SubSystemOne();
+            _two = new SubSystemTwo();
+            _three = new SubSystemThree();
+        }
+
+        public void MethodA()
+        {
+            Console.WriteLine("\n MethodA -----");
+            _one.MethodOne();
+            _two.MethodTwo();
+            _three.MethodThree();
+        }
+
+        public void MethodB()
+        {
+            Console.WriteLine("\n MethodB -----");
+            _two.MethodTwo();
+            _three.MethodThree();
+        }
+    }
+
+    /*
+        Facade Pattern
+        - 어떤 서브시스템의 일련의 인터페이스에 대한 통합된 인터페이스를 제공
+        - 복잡한 내부처리 내용을 일괄적으로 처리해준다. 외부에는 간단한 인터페이스만 노출
+        - 하나의 시스템에서 하나의 작업을 처리하는데 여러개의 클래스의 상호 작용이 필요할 떄 이것을 묶어서 처리하며 외부에는 간단한 인터페이스로 노출한다
+    */
+
+}
