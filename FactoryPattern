@@ -1,0 +1,73 @@
+using System;
+using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+
+
+namespace MySystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Building[] Buildings = new Building[1];
+
+            Buildings[0] = new Troopers();
+            
+            List<Robot> listRobot = new List<Robot>();
+
+            listRobot.Add(Buildings[0].makeRobot("로봇 생성"));
+
+            listRobot[0].Move("부스터");
+            Robot robotTeam = listRobot[0];
+            listRobot[0].Attacked(ref robotTeam);
+
+            Console.ReadLine();
+        }
+    }
+
+    public abstract class Robot
+    {
+        public string m_strName;
+
+        public abstract void Move(string _strPoint);
+        public abstract void Attacked(ref Robot _robotTarget);
+    }
+    
+    public class SuperRobot : Robot
+    {
+        public SuperRobot(string _strName)
+        {
+            this.m_strName = _strName;
+            Console.WriteLine(_strName + " 생성완료");
+        }
+
+        public override void Move(string _strPoint)
+        {
+            Console.WriteLine(m_strName + " : " + _strPoint + " 이동 ");
+        }
+
+        public override void Attacked(ref Robot _robotTarget)
+        {
+            Console.WriteLine(m_strName + " 피해 " + _robotTarget.m_strName + "<- 공격성공");
+        }
+    
+    }
+
+    public abstract class Building
+    {
+        public abstract Robot makeRobot(string _strName);
+    }
+
+    public class Troopers : Building
+    {
+        public override Robot makeRobot(string _strName)
+        {
+            return new SuperRobot(_strName);
+        }
+    }
+
+}
