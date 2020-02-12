@@ -71,3 +71,9 @@ namespace MySystem
     }
 
 }
+
+/* 
+    Factory Method Pattern
+    - 객체를 생성하는 부분을 서브클래스에 위임하는 패턴
+    -  클래스간의 결합도를 낮추기 위한 것
+*/
