@@ -1,0 +1,81 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+
+
+namespace MySystem
+{   
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Context c = new Context(new ConcreteStateA());
+
+            c.Request();
+            c.Request();
+            c.Request();
+            c.Request();
+            c.Request();
+            c.Request();
+            
+            Console.ReadKey();
+        }
+    }
+
+    abstract class State
+    {
+        public abstract void Handle(Context context);
+    }
+
+    class ConcreteStateA : State
+    {
+        public override void Handle(Context context)
+        {
+            context.State = new ConcreteStateB();
+        }
+    }
+
+    class ConcreteStateB : State
+    {
+        public override void Handle(Context context)
+        {
+            context.State = new ConcreteStateA();
+        }
+    }
+
+    class Context
+    {
+        private State _state;
+
+        public Context(State state)
+        {
+            this.State = state;
+        }
+
+        public State State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                Console.WriteLine("State " + _state.GetType().Name);
+            }
+        }
+
+        public void Request()
+        {
+            _state.Handle(this);
+        }
+    }
+
+    /* 
+        State Pattern
+        - 객체의 상태에 따라서, 동일한 동작이라도 다른 처리를 해야할때 사용된다.
+        - 하나의 객체에 여러가지의 상태가 존재할때 보통 If문이나 switch문으로 분기를 해서 결과를 처리한다. 그러나 신규 상태가 존재할때마다 기존의 If문이나 switch문이 다시 수정되어야하는데, 객체의 상태를 클래스화해서 그것을 참조하게 하는 식으로 소스의 변화를 최소화할 수 있다.
+    */
+
+}
