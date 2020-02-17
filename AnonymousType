@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace MySystem
 {
+    /* 
+        C# 3.0 부터 Anonymous Type을 사용하면 클래스를 미리 정의하지 않고 사용할 수 있다.
+        Anonymous Type은 공식적으로 클래스를 정의할 필요 없이 Type을 간단히 임시로 만들어 사용할 때 유용하다.
+        Anonymous Type은 읽기 전용이므로 속성값을 갱신할 수는 없다.
+     */
     class Program
     {
        static void Main(string[] args)
