@@ -2,6 +2,9 @@ using System;
 
 namespace MySystem
 {
+/* 
+    인덱서는 this키워드가 쓰이며, 메소드를 구현하지 않아도 클래스 속성처럼 set, get으로 접근가능하다.
+*/
     class MyClass
     {
         private const int MAX = 10;
