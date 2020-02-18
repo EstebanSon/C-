@@ -11,7 +11,8 @@ namespace MySystem
         이러한 경우에 확장메소드가 유용하게 사용될 수 있다.
 
      */
-    //  static class를 정의
+        static class를 정의
+     */
     public static class ExClass
     {
         // static 확장메소드를 정의
