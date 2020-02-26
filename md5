@@ -1,0 +1,31 @@
+			char strData[30], strSerial[30], strDataRe[30];
+			memset(strData,0,sizeof(strData));
+			memset(strSerial,0,sizeof(strSerial));
+			memset(strDataRe,0,sizeof(strDataRe));
+			sprintf_s(strData,"%s",strAText.GetBuffer(0));
+			sprintf_s(strSerial,"%s",W2A(GET_WNDAPP->m_HID.m_strSerial.GetBuffer(0)));
+			for (int i=0;i<32;i++)
+			{
+				if (i<16)
+				{
+					strDataRe[i] = strData[i];
+				}
+				else
+				{
+					strDataRe[i] = strSerial[i-16];
+				}
+			}
+
+			md5_state_t state;
+			md5_byte_t dataOut[16];
+
+			memset(&state,0,sizeof(md5_state_t));
+
+			md5_init(&state);
+			md5_append(&state,(md5_byte_t *)strDataRe,28);
+			md5_finish(&state, dataOut);
+
+			memset(strDataRe,0,sizeof(strDataRe));
+
+			memcpy(strDataRe,dataOut,16);
+			memcpy(&strDataRe[16],strData,16);
